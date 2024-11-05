@@ -1,3 +1,6 @@
+var ToolEx = ToolEx || {};
+ToolEx.TextManager = true;
+
 class TextManager {
     static #data = {};
     static apply_func = [];
