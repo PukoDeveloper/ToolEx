@@ -15,15 +15,26 @@ class TextManager {
             this.#events.emit('loading');
         }
         return new Promise((resolve, reject) => {
-            fetch(land_path).then(response => response.text())
-                .then(text => {
-                    this.#data = JSON.parse(text);
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', land_path, true);
+            xhr.onloadend = () => {
+                if (xhr.status === 200) {
+                    for (const key in JSON.parse(xhr.responseText)) {
+                        this.#data[key] = JSON.parse(xhr.responseText)[key];
+                    }
                     if (this.#events) {
                         this.#events.emit('loaded');
                     }
                     resolve();
-                })
-                .catch(error => reject(error));
+                }
+                else {
+                    reject(xhr.statusText);
+                }
+            }
+            xhr.onerror = () => {
+                reject(xhr.statusText);
+            }
+            xhr.send();
         });
     }
     static get(key) {
