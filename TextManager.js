@@ -28,11 +28,11 @@ class TextManager {
                     resolve();
                 }
                 else {
-                    reject(xhr.statusText);
+                    throw Error(xhr.statusText);
                 }
             }
             xhr.onerror = () => {
-                reject(xhr.statusText);
+                throw Error(xhr.statusText);
             }
             xhr.send();
         });
